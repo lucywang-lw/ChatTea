@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { loginRoute } from '../utils/APIRoutes';
 import Logo from "../assets/logo.svg";
-
+import { toastOptions } from './toastOptions';
 
 function Login() {
     const navigate = useNavigate();
@@ -15,13 +15,6 @@ function Login() {
         password: "",
     })
 
-    const toastOptions = {
-        position: "bottom-right",
-        autoClose: 8000,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "dark",
-    }
 
     useEffect(() => {
         if (localStorage.getItem("chat-app-user")) {

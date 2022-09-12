@@ -5,32 +5,31 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { registerRoute } from '../utils/APIRoutes';
-import Logo from "../assets/logo.svg"
-
+import Logo from "../assets/logo.svg";
+import { toastOptions } from './toastOptions';
 
 function Register() {
     const navigate = useNavigate();
-    const [values, setValues] = useState({
+    const [ values, setValues ] = useState({
         username: "",
         email: "",
         password: "",
         confirmPassword: ""
     })
 
-    const toastOptions = {
-        position: "bottom-right",
-        autoClose: 8000,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "dark",
-    }
-
+    // if user is logged in, redirect to chat page
     useEffect(() => {
         if (localStorage.getItem("chat-app-user")) {
             navigate("/");
         }
     }, []);
 
+    // update inputted values
+    const handleChange = (e) => {
+        setValues({...values, [e.target.name]: e.target.value });
+    };
+
+    // 
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (handleValidation()) {
@@ -49,6 +48,7 @@ function Register() {
         };
     }
 
+    // check that input is valid
     const handleValidation = () => {
         const {username, email, password, confirmPassword } = values;
         if (password !== confirmPassword) {
@@ -62,12 +62,9 @@ function Register() {
             return false;
         } else if (email === "") {
             toast.error("Email is required.", toastOptions);
+        } else {
+            return true;
         }
-        return true;
-    }
-
-    const handleChange = (e) => {
-        setValues({...values, [e.target.name]: e.target.value });
     }
 
   return (
@@ -78,6 +75,7 @@ function Register() {
                     <img src={Logo} alt="logo" />                    
                     <h1>ChatTea</h1>
                 </div>
+
                 <input 
                     type="text" 
                     placeholder="Username" 
@@ -86,7 +84,7 @@ function Register() {
                 />
                 <input 
                     type="email" 
-                    placeholder="myemail@gmail.com" 
+                    placeholder="username@email.com" 
                     name="email" 
                     onChange={(e) => handleChange(e)} 
                 />
