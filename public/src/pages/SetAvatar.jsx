@@ -18,7 +18,7 @@ function SetAvatar() {
     const [ loading, setLoading ] = useState(true);
     const [ selectedAvatar, setSelectedAvatar ] = useState(undefined);
     
-    // If user is not created, redirect to login page
+    // If user is not logged in, redirect to login page
     useEffect(() => {
         if (!localStorage.getItem("chat-app-user")) {
             navigate("/login");
@@ -72,10 +72,10 @@ function SetAvatar() {
           ) : (
             <Container>
               <div className="title-container">
-                <h1>Pick an Avatar as your profile picture</h1>
+                <h1>Pick an avatar as your profile picture</h1>
               </div>
               <div className="avatars">
-                {avatars.map((avatar, index) => {
+                { avatars.map((avatar, index) => {
                   return (
                     <div
                       className={`avatar ${

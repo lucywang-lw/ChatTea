@@ -10,37 +10,45 @@ import { toastOptions } from './toastOptions';
 
 function Login() {
     const navigate = useNavigate();
-    const [values, setValues] = useState({
+    const [ inputVal, setInputVal ] = useState({
         username: "",
         password: "",
     })
 
-
+    // If user is already logged in, redirect to chat page
     useEffect(() => {
         if (localStorage.getItem("chat-app-user")) {
             navigate("/");
         }
     }, []);
 
+    // update inputted values
+    const handleChange = (e) => {
+        setInputVal({...inputVal, [e.target.name]: e.target.value });
+    }
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (handleValidation()) {
-            const {username, password } = values;
-            const { data } = await axios.post(loginRoute, {
+            const {username, password } = inputVal;
+            const { data } = await axios.post( loginRoute, {
                 username,
                 password,
             });
-            if (data.status === false) {
+            if (data.valid === false) {
                 toast.error(data.msg, toastOptions);
             } else {
+                // set user in local storage and navigate to chat app
                 localStorage.setItem("chat-app-user", JSON.stringify(data.user));
                 navigate("/");
             }
         };
     }
 
+    // check that user filled in username and password
     const handleValidation = () => {
-        const {username, password } = values;
+        const { username, password } = inputVal;
         if (password === "") {
             toast.error("Password is required.", toastOptions);
             return false;
@@ -51,15 +59,13 @@ function Login() {
         return true;
     }
 
-    const handleChange = (e) => {
-        setValues({...values, [e.target.name]: e.target.value });
-    }
+    
 
   return (
     <>
         <FormContainer>
             <form onSubmit={ (e) => handleSubmit(e) }>
-                <div className="brand">
+                <div className="logo">
                     <img src={Logo} alt="logo" />
                     <h1>ChatTea</h1>
                 </div>
@@ -78,7 +84,7 @@ function Login() {
                 />
                 
                 <button type="submit">Login</button>
-                <span>Don't have an account? <Link to="/register">Register</Link></span>
+                <div className='account'>Don't have an account? <Link to="/register">Register</Link></div>
             </form>
         </FormContainer>
         <ToastContainer />
@@ -89,18 +95,17 @@ function Login() {
 const FormContainer = styled.div`
     height: 100vh;
     width: 100vw;
+    background-color: #D1D7B5;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 1rem;
     align-items: center;
-    background-color: #D1D7B5;
 
-    .brand {
+    .logo {
         display: flex;
         align-items: center;
         img {
-            height: 5rem;
+            height: 65%;
         }
         h1 {
             color: white;
@@ -110,17 +115,16 @@ const FormContainer = styled.div`
     form {
         display: flex;
         flex-direction: column;
-        gap: 2rem;
-        background-color: #00000076;
-        border-radius: 2rem;
-        padding: 3rem 5rem;
+        gap: 1.5rem;
+        background-color: #0000008a;
+        border-radius: 15px;
+        padding: 2.5rem 5rem;
         input {
             background-color: transparent;
             padding: 1rem;
             border: 0.1rem solid #D1D7B5;
             border-radius: 0.4rem;
             color: white;
-            width: 100%;
             font-size: 1rem;
             ::placeholder { 
             color: white;
@@ -137,21 +141,21 @@ const FormContainer = styled.div`
         }
     }  
     button {
+        border: none;
         background-color: #D1D7B5;
         color: white;
         padding: 1rem 2rem;
-        border: none;
         font-weight: bold;
         cursor: pointer;
         border-radius: 0.4rem;
-        font-size: 1rem;
+        font-size: 18px;
         text-transform: uppercase;
         transition: 0.5s ease-in-out;
         &:hover {
             background-color: #809C6C;
         }
     } 
-    span {
+    .account {
         color: white;
         text-transform: uppercase;
         a {
@@ -160,7 +164,7 @@ const FormContainer = styled.div`
             font-weight: bold;
 
         }
-    }   
+    }    
 `;
 
 export default Login;

@@ -4,6 +4,8 @@ import styled from 'styled-components';
 
 function Logout() {
     const navigate = useNavigate();
+
+    // clear local storage and redirect to login page
     const handleClick = async () => {
         localStorage.clear();
         navigate("/login");
@@ -17,11 +19,11 @@ function Logout() {
 }
 
 const Button = styled.button`
-display: flex;
+  display: flex;
+  border-radius: 0.25rem;
   justify-content: center;
   align-items: center;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
+  padding: 0.6rem;
   background-color: #AB9F8D;
   border: none;
   cursor: pointer;

@@ -6,15 +6,13 @@ import Logout from './Logout';
 
 
 function Welcome({ currentUser }) {
-    console.log("currentUser: ", currentUser);
   return (
     <Container>
         <img src={Logo} alt="logo" />
         <div>
         <h1>
-        Welcome, <span>{currentUser.username}!</span>
+        Welcome to ChatTea, <span>{currentUser.username}!</span>
         </h1>
-        <h3>Please select a chat to start messaging.</h3>
         </div>
         <Logout />
   </Container>  )

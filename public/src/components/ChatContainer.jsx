@@ -5,7 +5,6 @@ import styled from "styled-components";
 import { getAllMessagesRoute, sendMessageRoute } from '../utils/APIRoutes';
 import ChatInput from './ChatInput';
 import Logout from './Logout';
-import Messages from './Messages';
 
 function ChatContainer({ currentChat, currentUser, socket }) {
     const scrollRef = useRef();
