@@ -50,17 +50,17 @@ module.exports.login = async (req, res, next ) => {
 
 
 module.exports.setAvatar = async (req, res, next ) => {
+    // find user with id and store their avatarImage into the database
     try {
         const userId = req.params.id;
-        console.log(userId);
         const avatarImage = req.body.image;
         const userData = await User.findByIdAndUpdate(userId, {
             isAvatarImageSet: true,
             avatarImage,   
         },
         { new: true });
-        console.log("userData: ", userData);
-        console.log("isAvatarImageSet: ", userData.isAvatarImageSet);
+         
+        // returns if image is set
         return res.json({
             isSet: userData.isAvatarImageSet, 
             image: userData.avatarImage,
@@ -72,7 +72,8 @@ module.exports.setAvatar = async (req, res, next ) => {
 
 module.exports.getAllUsers = async (req, res, next ) => {
     try {
-        const users = await User.find({_id:{$ne:req.params.id} }).select([   // select all users except current
+        // select all users except current and return user information (excluding password)
+        const users = await User.find({_id:{$ne:req.params.id} }).select([   
             "email",
             "username",
             "avatarImage",
