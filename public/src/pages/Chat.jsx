@@ -16,29 +16,30 @@ function Chat() {
   const [ currentChat, setCurrentChat ] = useState(undefined);
   const [ loaded, setLoaded ] = useState(false);
 
-
+  // if user is not logged in, direct to login page - if logged in, set as currentUser and set loaded to true
   useEffect(() => {
     async function addCurrentUser() {
       if(!localStorage.getItem("chat-app-user")) {
             navigate("/login");
       } else {
-        setCurrentUser(await JSON.parse(localStorage.getItem("chat-app-user")));
         setLoaded(true);
+        setCurrentUser(await JSON.parse(localStorage.getItem("chat-app-user")));
       }
-    };
+      };
 
-    addCurrentUser();
-  }, []);
+      addCurrentUser();
+    }, []);
 
-
+  
+  // connect to socket whenever the current user changes, and sends message to add the user
   useEffect(() => {
     if (currentUser) {
-      socket.current = io(host);
-      socket.current.emit("add-user", currentUser._id);
+      socket.current = io(host); // connection
+      socket.current.emit("add-user", currentUser._id); // send message
     }
   }, [currentUser]);
 
-
+  // if current user is set, and avatar image is also set, get all the users in database
   useEffect(() => {
     async function addContacts() {
       if (currentUser) {
@@ -55,17 +56,17 @@ function Chat() {
     addContacts();
   }, [currentUser]);
 
-  const handleChatChange = (chat) => {
+  // update chat whenever it changes
+  const handleChat = (chat) => {
     setCurrentChat(chat);
-  }
-  console.log("in Chat: ", currentUser
-  );
+  };
+  
 
   return (
     <Container>
       <div className="container">
-        <Contacts contacts={contacts} currentUser={currentUser} changeChat={handleChatChange} />
-        { loaded && currentChat=== undefined ? (
+        <Contacts contacts={contacts} currentUser={currentUser} changeChat={handleChat} />
+        { loaded && currentChat === undefined ? (
           <Welcome currentUser={currentUser} />
         ) : (
           <ChatContainer currentChat={currentChat} currentUser={currentUser} socket={socket} />

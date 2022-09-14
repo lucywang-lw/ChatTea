@@ -10,20 +10,21 @@ function ChatContainer({ currentChat, currentUser, socket }) {
     const scrollRef = useRef();
     const [ messages, setMessages ] = useState([]);
     const [ recvMsg, setRecvMsg ] = useState(null);
-    var key = 1;
+    var key = 1; // key for each message
 
-    async function getAllMsg() {
+    // search for all messages that current user sent to the current chat
+    useEffect(() => {
+      async function getAllMsg() {
         const response = await axios.post(getAllMessagesRoute, {
             from: currentUser._id,
             to: currentChat._id,
         });
         setMessages(response.data);
-    }
+      }
 
-    useEffect(() => {
-        if (currentChat) {
-            getAllMsg();
-        };
+      if (currentChat) {
+          getAllMsg();
+      };
     }, [currentChat]);
 
     const handleSendMsg = async (msg) => {

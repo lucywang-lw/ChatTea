@@ -77,12 +77,7 @@ function SetAvatar() {
               <div className="avatars">
                 { avatars.map((avatar, index) => {
                   return (
-                    <div
-                      className={`avatar ${
-                        selectedAvatar === index ? "selected" : ""
-                      }`}
-                      key={avatar}
-                    >
+                    <div className={`avatar ${selectedAvatar === index ? "selected" : ""}`} key={avatar}>
                       <img
                         src={`data:image/svg+xml;base64,${avatar}`}
                         alt="avatar"
